@@ -6,14 +6,8 @@ from find_product_by_sku import find_product_by_sku
 
 class CacheClient:
     def __init__(self):
-        servers = ['mc1:11211', 'mc2:11212']
+        servers = ['mc1:11211']
         self.mc = memcache.Client(servers)
-        try:
-            print(f"Conexión exitosa {self.mc.get_stats()}.")
-        except Exception as e:
-            print(f"No se pudo conectar. Error {str(e)}")
-        finally:
-            self.mc.disconnect_all()
         self.mc.flush_all()
 
     def get(self, key):
@@ -67,7 +61,7 @@ class CacheClient:
             elapsed_time = time.time() - start_time
             time_with_cache += elapsed_time
 
-            if elapsed_time < 1:
+            if 1000*elapsed_time < 10:
                 avoided_json_lookups += 1
                 
         print(f"Number of times JSON lookup was avoided: {avoided_json_lookups}")

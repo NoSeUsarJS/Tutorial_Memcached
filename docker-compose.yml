@@ -7,14 +7,6 @@ services:
       - "11211:11211"
     networks:
       - cache_network
-  
-  memcached-2:
-    container_name: mc2
-    image: memcached:latest
-    ports:
-      - "11212:11212"
-    networks:
-      - cache_network
 
   client:
     build:
@@ -27,7 +19,6 @@ services:
       - cache_network
     depends_on:
       - memcached-1
-      - memcached-2
 
 networks:
   cache_network:
