@@ -1,0 +1,33 @@
+version: '1'
+services:
+  memcached-1:
+    container_name: mc1
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - cache_network
+  
+  memcached-2:
+    container_name: mc2
+    image: memcached:latest
+    ports:
+      - "11212:11212"
+    networks:
+      - cache_network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    tty: true
+    stdin_open: true
+    networks:
+      - cache_network
+    depends_on:
+      - memcached-1
+      - memcached-2
+
+networks:
+  cache_network:
