@@ -6,9 +6,10 @@ from find_product_by_sku import find_product_by_sku
 
 class CacheClient:
     def __init__(self):
-        servers = ['mc1:11211']
+        servers = ['mc1:11211', 'mc2:11211']
         self.mc = memcache.Client(servers)
         self.mc.flush_all()
+        print(f"Active memcached instances: {len(self.mc.get_stats())}")
 
     def get(self, key):
         start_time = time.time()  # Inicio del temporizador
@@ -44,7 +45,7 @@ class CacheClient:
     def simulate_searches(self, n_searches):
         #Normal distribution
         keys_to_search = np.random.normal(50, 10, n_searches)
-        keys_to_search = [int(round(num)) % 5000 for num in keys_to_search]
+        keys_to_search = [int(round(num)) % 100000 for num in keys_to_search]
 
         # Métricas
         time_with_cache = 0

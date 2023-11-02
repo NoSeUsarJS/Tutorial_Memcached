@@ -1,10 +1,18 @@
-version: '1'
+version: '3.3'
 services:
   memcached-1:
     container_name: mc1
     image: memcached:latest
     ports:
       - "11211:11211"
+    networks:
+      - cache_network
+
+  memcached-2:
+    container_name: mc2
+    image: memcached:latest
+    ports:
+      - "11212:11211"
     networks:
       - cache_network
 
